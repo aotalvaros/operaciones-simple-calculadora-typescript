@@ -12,14 +12,10 @@ describe('Debe multiplicar', () => {
     });
     
     test('debe multiplicar valores decimales', () => {
- 
-        expect( multiplicar({ numero1: 3.6002, numero2: 3.4 })).toBe(12.24068);
-         
+        expect( multiplicar({ numero1: 3.6002, numero2: 3.4 })).toBe(12.24068);        
      });
 
      test('debe multiplicar 1 numero negativo y otro numero en 0', () => {
- 
-        expect( multiplicar({ numero1: -3, numero2: 0 })).toBe(-0);
-         
+        expect( multiplicar({ numero1: -3, numero2: 0 })).toBe(-0);        
      });
 })
