@@ -10,8 +10,8 @@ describe('Debe sumar', () => {
         expect(sumar({ numero1: -2, numero2: -5 })).toBe(-7);
     });
 
-    test('debe sumar 2 valores decimales', () => {
-        expect(sumar({ numero1: 3.3, numero2: 3.6 })).toBe(6.9);
+    test('debe sumar 2 valores decimales y retornar el valor con dos decimales', () => {
+        expect(sumar({ numero1: 3.30005552344, numero2: 3.63454323232 })).toBe(6.93);
     });
 
     test('debe sumar 2 valores en miles', () => {
