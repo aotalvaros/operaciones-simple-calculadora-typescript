@@ -1,5 +1,7 @@
 import { IValorNumeros } from "../interface/IValorNumeros";
+import { redonderNumero } from "../redondearNumero";
 
 export const restar = (valores: IValorNumeros ): Number => {
-    return  valores.numero1.valueOf()- valores.numero2.valueOf();
-}
+    const {valor1,valor2} = redonderNumero(valores);
+    return  (valor1.valueOf() - valor2.valueOf());
+};
