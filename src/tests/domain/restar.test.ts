@@ -7,7 +7,7 @@ describe('Debe restar', () => {
     });
     
     test('debe restar valores decimales', () => {
-        expect(restar({ numero1: 3.6002, numero2: 3.4})).toBe(0.20020000000000016);
+        expect(restar({ numero1: 5.99675, numero2: 3.63678})).toBe(2.36);
     });
 
     test('debe restar 2 valores en miles', () => {
