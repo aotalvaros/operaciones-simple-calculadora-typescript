@@ -1,5 +1,5 @@
 
 export interface IValorNumeros {
-    numero1: Number,
-    numero2: Number 
+    numero1: number,
+    numero2: number 
 };
