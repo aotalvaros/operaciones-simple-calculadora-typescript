@@ -2,9 +2,7 @@ import { multiplicar } from "../../../domain/calculadora/multiplicar";
 import { mockFunction } from "../../../helpers/JestHelpers";
 import { redondearADosDecimales } from "../../../utils/redondearADosDecimales";
 
-jest.mock('../../../utils/redondearADosDecimales', () => ({    
-    redondearADosDecimales: jest.fn()
-}));
+jest.mock('../../../utils/redondearADosDecimales');
 
 describe('Debe multiplicar', () => {
     const redondearADosDecimalesMock = mockFunction(redondearADosDecimales);

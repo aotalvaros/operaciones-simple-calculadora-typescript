@@ -2,9 +2,7 @@ import { sumar } from '../../../domain/calculadora/sumar';
 import { mockFunction } from '../../../helpers/JestHelpers';
 import { redondearADosDecimales } from '../../../utils/redondearADosDecimales';
 
-jest.mock('../../../utils/redondearADosDecimales.ts', () => ({    
-    redondearADosDecimales: jest.fn()
-}));
+jest.mock('../../../utils/redondearADosDecimales.ts');
 
 describe('Debe sumar', () => {
     
