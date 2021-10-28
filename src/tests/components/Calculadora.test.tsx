@@ -17,7 +17,7 @@ jest.mock('sweetalert2');
 
 describe('Debe renderizar calculadora', () => {
 
-    let wrapper = shallow( <Calculadora/> );
+    let wrapper: any;
     let dividirMock = mockFunction(dividir);
     let sweetAlertMock = mockFunction(Swal.fire);
     
