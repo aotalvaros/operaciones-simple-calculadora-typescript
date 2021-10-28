@@ -7,112 +7,94 @@ import { restar } from '../../domain/calculadora/restar';
 import { sumar } from '../../domain/calculadora/sumar';
 import { mockFunction } from '../../helpers/JestHelpers';
 import { IResultadoDivision } from '../../interface/IResultadoDivision';
-
+import Swal from 'sweetalert2';
 
 jest.mock('../../domain/calculadora/sumar');
 jest.mock('../../domain/calculadora/restar');
 jest.mock('../../domain/calculadora/multiplicar');
 jest.mock('../../domain/calculadora/dividir');
+jest.mock('sweetalert2');
 
 describe('Debe renderizar calculadora', () => {
 
     let wrapper = shallow( <Calculadora/> );
+    let dividirMock = mockFunction(dividir);
+    let sweetAlertMock = mockFunction(Swal.fire);
+    
     beforeEach( () => { 
         wrapper =shallow(<Calculadora />);
     });
-
-    let dividirMock = mockFunction(dividir);
     
     test('debe sumar 2 valores', () => {    
         const sumarMock = mockFunction(sumar);
-        const eventoUno = {target: {value: 2}};
-        wrapper.find("#inputObtienePrimerNumero").simulate('change',eventoUno); 
-        
-        const eventoDos = {target: {value: 3}};
-        wrapper.find('#inputObtieneSegundoNumero').simulate('change',eventoDos);
-        
+        wrapper.find("#inputObtienePrimerNumero").simulate('change', { target: { value: 2 } }); 
+        wrapper.find('#inputObtieneSegundoNumero').simulate('change',{ target: { value: 3 } });       
         sumarMock.mockReturnValue(5);
-        wrapper.find("#buttonHacerSumar").simulate('click'); 
-        const resultado = wrapper.find("#pMostrarResultado");
-
+        
+        wrapper.find("#buttonHacerSumar").simulate('click');
+        let resultado = wrapper.find("#pMostrarResultado");
+        
         expect(Number.parseFloat(resultado.text())).toBe(5);
-
     });
 
     test('debe restar 2 numeros', () => {
         const restarMock = mockFunction(restar);
-        const eventoUno = {target: {value: 3}};
-        wrapper.find("#inputObtienePrimerNumero").simulate('change',eventoUno); 
-        
-        const eventoDos = {target: {value: 1}};
-        wrapper.find('#inputObtieneSegundoNumero').simulate('change',eventoDos);
-        
+        wrapper.find("#inputObtienePrimerNumero").simulate('change', { target: { value: 3 } }); 
+        wrapper.find('#inputObtieneSegundoNumero').simulate('change', { target: { value: 1 } });       
         restarMock.mockReturnValue(2);
+
         wrapper.find("#buttonHacerResta").simulate('click'); 
-        const resultado = wrapper.find("#pMostrarResultado"); 
+        const resultado = wrapper.find("#pMostrarResultado");
 
         expect(Number.parseFloat(resultado.text())).toBe(2);
     });
 
     test('debe multiplicar 2 numeros', () => {
         const multiplicarMock = mockFunction(multiplicar);
-        const eventoUno = {target: {value: 3}};
-        wrapper.find("#inputObtienePrimerNumero").simulate('change',eventoUno); 
-        
-        const eventoDos = {target: {value: 2}};
-        wrapper.find('#inputObtieneSegundoNumero').simulate('change',eventoDos);
-        
+        wrapper.find("#inputObtienePrimerNumero").simulate('change', { target: { value: 3 } });  
+        wrapper.find('#inputObtieneSegundoNumero').simulate('change', { target: { value: 2 } });      
         multiplicarMock.mockReturnValue(9);
+
         wrapper.find("#buttonHacerMultiplicacion").simulate('click'); 
-        const resultado = wrapper.find("#pMostrarResultado"); 
+        const resultado = wrapper.find("#pMostrarResultado");
 
         expect(Number.parseFloat(resultado.text())).toBe(9);
     });
 
     test('debe dividir 2 numeros', () => {
-        const eventoUno = {target: {value: 3}};
-        wrapper.find("#inputObtienePrimerNumero").simulate('change',eventoUno); 
-        
-        const eventoDos = {target: {value: 2}};
-        wrapper.find('#inputObtieneSegundoNumero').simulate('change',eventoDos);
-                
+        wrapper.find("#inputObtienePrimerNumero").simulate('change', { target: { value: 3} });        
+        wrapper.find('#inputObtieneSegundoNumero').simulate('change', { target: { value: 2} });               
         dividirMock.mockReturnValue({ resultado: 1.5, error: '' });
+        
         wrapper.find("#buttonHacerDivision").simulate('click'); 
-        const resultados = wrapper.find("#pMostrarResultado"); 
+        const resultado = wrapper.find("#pMostrarResultado");
 
-        expect(Number.parseFloat(resultados.text())).toBe(1.5);
+        expect(Number.parseFloat(resultado.text())).toBe(1.5);
     });
 
     test('debe mostrar un error cuando se divide entre 0', () => {
-        const eventoUno = {target: {value: 3}};
-        wrapper.find("#inputObtienePrimerNumero").simulate('change',eventoUno); 
-        
-        const eventoDos = {target: {value: 0}};
-        wrapper.find('#inputObtieneSegundoNumero').simulate('change',eventoDos);
-        
+        const mensajeError: string = 'La divisi\u00f3n por 0 no esta difinida';
         const resultadoDivision: IResultadoDivision 
-            = { resultado: 0, error: 'La division por 0 no esta difinida' };
+            = { resultado: 0, error: mensajeError };
+        wrapper.find("#inputObtienePrimerNumero").simulate('change', { target: { value: 3 } }); 
+        wrapper.find('#inputObtieneSegundoNumero').simulate('change', { target: { value: 0 } });
         dividirMock.mockReturnValue(resultadoDivision);
-        wrapper.find("#buttonHacerDivision").simulate('click'); 
-        const resultados = wrapper.find("#pMostarError"); 
+        
+        wrapper.find("#buttonHacerDivision").simulate('click');
 
-        expect(resultados.text()).toBe('La division por 0 no esta difinida');
+        expect(sweetAlertMock).toHaveBeenCalledWith('Divisi\u00f3n indeterminada', mensajeError, 'error');
+        expect(sweetAlertMock).toHaveBeenCalled();
     });
 
-    test('no debe mostar el parrafo del error cuando la funcion dividir retorna un numero', () => {
-        const eventoUno = {target: {value: 3}};
-        wrapper.find("#inputObtienePrimerNumero").simulate('change',eventoUno); 
-        
-        const eventoDos = {target: {value: 2}};
-        wrapper.find('#inputObtieneSegundoNumero').simulate('change',eventoDos);
-        
+    test('no debe mostrar error cuando este vacio', () => {
+        wrapper.find("#inputObtienePrimerNumero").simulate('change',{ target: { value: 3 } }); 
+        wrapper.find('#inputObtieneSegundoNumero').simulate('change',{ target: { value: 4 } });      
         const resultadoDivision: IResultadoDivision 
-            = { resultado: 1.5, error: ' ' };
+            = { resultado: 0.75, error: '' };
         dividirMock.mockReturnValue(resultadoDivision);
-        wrapper.find("#buttonHacerDivision").simulate('click'); 
-        const resultados = wrapper.find("#pMostarError"); 
 
-        expect(resultados.text()).toBe(' ');
+        wrapper.find("#buttonHacerDivision").simulate('click');        
+
+        expect(sweetAlertMock).not.toHaveBeenCalled();       
     });
-
 });
