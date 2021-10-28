@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { dividir } from '../domain/calculadora/dividir';
 import { multiplicar } from '../domain/calculadora/multiplicar';
 import { restar } from '../domain/calculadora/restar';
@@ -7,20 +7,18 @@ import { IResultadoDivision } from '../interface/IResultadoDivision';
 import { IValorNumeros } from '../interface/IValorNumeros';
 import '../style/Calculadora.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 export const Calculadora = () => {
     const [inputOneState, setInputOne] = useState<number>(0);
     const [inputTwoState, setInputTwo] = useState<number>(0);       
     const [inputResultado, setInputResultado] = useState<number>(0);
-    const [error, setError] = useState<string>('');
   
     const valores: IValorNumeros = {
         numero1: inputOneState,
         numero2: inputTwoState
     }; 
-    
-    
+       
     const performAddition = (): void => {
         setInputResultado(sumar(valores));       
     };
@@ -37,7 +35,9 @@ export const Calculadora = () => {
     const performDivision = (): void => {
         const { resultado, error }: IResultadoDivision = dividir(valores);       
         setInputResultado(resultado);
-        setError(error);      
+        if (error!== '') {
+            Swal.fire("Divisi\u00f3n indeterminada", error, "error");                        
+        };     
     }; 
     
     const handleOnChangeInputOne = ({ target }: ChangeEvent<HTMLInputElement>): void => {
@@ -48,15 +48,6 @@ export const Calculadora = () => {
         const {value} = target; 
         setInputTwo(Number.parseFloat(value));
     };
-    
-    useEffect(() => { 
-        if (error!== '') {
-            swal("Error", error, "error");                        
-        };
-        return () =>{
-            setError('');
-        }; 
-    },[error]);
 
     return (
         <div className="App">
