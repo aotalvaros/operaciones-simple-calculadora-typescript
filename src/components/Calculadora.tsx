@@ -20,14 +20,13 @@ export const Calculadora = () => {
         numero2: inputTwoState
     }; 
     
+    
     const performAddition = (): void => {
-        setInputResultado(sumar(valores));
-        
+        setInputResultado(sumar(valores));       
     };
     
     const performSubtraction = (): void => {
-        setInputResultado(restar(valores));
-        
+        setInputResultado(restar(valores));        
     };
     
     const performMultiplication = (): void => {
@@ -43,11 +42,11 @@ export const Calculadora = () => {
     
     const handleOnChangeInputOne = ({ target }: ChangeEvent<HTMLInputElement>): void => {
         const {value} = target; 
-        setInputOne(Number.parseInt(value));
+        setInputOne(Number.parseFloat(value));
     };
     const handleOnChangeInputTwo = ({ target }: ChangeEvent<HTMLInputElement>): void => {
         const {value} = target; 
-        setInputTwo(Number.parseInt(value));
+        setInputTwo(Number.parseFloat(value));
     };
     
     useEffect(() => { 
