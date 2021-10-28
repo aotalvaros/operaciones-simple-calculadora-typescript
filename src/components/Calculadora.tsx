@@ -22,17 +22,17 @@ export const Calculadora = () => {
     
     const performAddition = (): void => {
         setInputResultado(sumar(valores));
-        limpiarError();
+        
     };
     
     const performSubtraction = (): void => {
         setInputResultado(restar(valores));
-        limpiarError();
+        
     };
     
     const performMultiplication = (): void => {
         setInputResultado(multiplicar(valores));
-        limpiarError();
+        
     };
     
     const performDivision = (): void => {
@@ -50,16 +50,12 @@ export const Calculadora = () => {
         setInputTwo(Number.parseInt(value));
     };
     
-    const limpiarError = (): void => {
-        setError('');
-    };  
-
     useEffect(() => { 
         if (error!== '') {
             swal("Error", error, "error");                        
         };
         return () =>{
-            limpiarError();
+            setError('');
         }; 
     },[error]);
 
