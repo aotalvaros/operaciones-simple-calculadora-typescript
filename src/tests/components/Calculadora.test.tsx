@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Calculadora } from '../../components/Calculadora';
 import { dividir } from '../../domain/calculadora/dividir';
 import { multiplicar } from '../../domain/calculadora/multiplicar';
@@ -16,23 +16,25 @@ jest.mock('../../domain/calculadora/dividir');
 jest.mock('sweetalert2');
 
 describe('Debe renderizar calculadora', () => {
-
-    let wrapper: any;
-    let dividirMock = mockFunction(dividir);
-    let sweetAlertMock = mockFunction(Swal.fire);
     
-    beforeEach( () => { 
-        wrapper =shallow(<Calculadora />);
+    let wrapper: ShallowWrapper;
+    let dividirMock: any;
+    let sweetAlertMock: any;
+    
+    beforeAll(() => { 
+        wrapper = shallow(<Calculadora />);
+        dividirMock = mockFunction(dividir);
+        sweetAlertMock = mockFunction(Swal.fire);
     });
     
     test('debe sumar 2 valores', () => {    
         const sumarMock = mockFunction(sumar);
         wrapper.find("#inputObtienePrimerNumero").simulate('change', { target: { value: 2 } }); 
-        wrapper.find('#inputObtieneSegundoNumero').simulate('change',{ target: { value: 3 } });       
-        sumarMock.mockReturnValue(5);
+        wrapper.find('#inputObtieneSegundoNumero').simulate('change', { target: { value: 3 } });       
+        sumarMock.mockReturnValue(5);   
         
         wrapper.find("#buttonHacerSumar").simulate('click');
-        let resultado = wrapper.find("#pMostrarResultado");
+        const resultado = wrapper.find("#pMostrarResultado");
         
         expect(Number.parseFloat(resultado.text())).toBe(5);
     });
