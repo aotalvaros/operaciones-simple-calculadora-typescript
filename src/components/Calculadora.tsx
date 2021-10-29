@@ -8,6 +8,7 @@ import { IValorNumeros } from '../interface/IValorNumeros';
 import '../style/Calculadora.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
+import logoGobanUnidos from '../image/LogoInsti.png'
 
 export const Calculadora = () => {
     const [inputOneState, setInputOne] = useState<number>(0);
@@ -54,7 +55,7 @@ export const Calculadora = () => {
             <div className="calc-wrapper ">
                 <img
                     className="img-responsive logo-img" alt=""
-                    src="https://sedeelectronica.antioquia.gov.co/info/antioquia_se/media/bloque2071.png"
+                    src={logoGobanUnidos}
                     /> 
                 <div className='row'>
                     <input 
